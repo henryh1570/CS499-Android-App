@@ -10,5 +10,17 @@
         android:textSize="70dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/deleteScore"
+        android:textSize="50dp"
+        android:text="Reset Score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/deleteHistory"
+        android:textSize="45dp"
+        android:text="Delete History"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
