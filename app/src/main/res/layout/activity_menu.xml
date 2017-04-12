@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg1">
+
+    <TextView
+        android:layout_marginBottom="130dp"
+        android:layout_gravity="center"
+        android:text="Menu"
+        android:textSize="100dp"
+        android:textColor="#FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_margin="20dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:background="@null"
+            android:id="@+id/BoxSleepEntry"
+            android:src="@drawable/thumbnail_sleep"
+            android:onClick="boxOnClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:background="@null"
+            android:id="@+id/BoxMiniGame"
+            android:src="@drawable/thumbnail_game"
+            android:onClick="boxOnClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:background="@null"
+            android:id="@+id/BoxStats"
+            android:src="@drawable/thumbnail_stats"
+            android:onClick="boxOnClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:background="@null"
+            android:id="@+id/BoxProfile"
+            android:src="@drawable/thumbnail_profile"
+            android:onClick="boxOnClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:background="@null"
+            android:id="@+id/BoxDeleteData"
+            android:src="@drawable/thumbnail_delete"
+            android:onClick="boxOnClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:background="@null"
+            android:id="@+id/BoxExtra"
+            android:src="@drawable/thumbnail_extra"
+            android:onClick="boxOnClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -15,6 +15,42 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MenuActivity"
+            android:label="MenuActivity"
+            android:parentActivityName=".MainActivity"></activity>
+
+        <activity
+            android:name=".DeleteDataActivity"
+            android:label="DeleteDataActivity"
+            android:parentActivityName=".MenuActivity"></activity>
+
+        <activity
+            android:name=".ExtraActivity"
+            android:label="ExtraActivity"
+            android:parentActivityName=".MenuActivity"></activity>
+
+        <activity
+            android:name=".MiniGameActivity"
+            android:label="MiniGameActivity"
+            android:parentActivityName=".MenuActivity"></activity>
+
+        <activity
+            android:name=".ProfileActivity"
+            android:label="ProfileActivity"
+            android:parentActivityName=".MenuActivity"></activity>
+
+        <activity
+            android:name=".SleepActivity"
+            android:label="SleepActivity"
+            android:parentActivityName=".MenuActivity"></activity>
+
+        <activity
+            android:name=".StatsActivity"
+            android:label="StatsActivity"
+            android:parentActivityName=".MenuActivity"></activity>
+
     </application>
 
 </manifest>

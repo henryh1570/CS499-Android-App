@@ -1,0 +1,48 @@
+package hu.henry.sleepkeep;
+
+import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+
+public class MenuActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_menu);
+
+    }
+
+    // OnClickListeners to change to the selected activity
+    public void boxOnClick(View view) {
+        Intent i = null;
+        switch (view.getId()) {
+            case R.id.BoxSleepEntry:
+                i = SleepActivity.newIntent(MenuActivity.this);
+                break;
+            case R.id.BoxMiniGame:
+                i = MiniGameActivity.newIntent(MenuActivity.this);
+                break;
+            case R.id.BoxStats:
+                i = StatsActivity.newIntent(MenuActivity.this);
+                break;
+            case R.id.BoxProfile:
+                i = ProfileActivity.newIntent(MenuActivity.this);
+                break;
+            case R.id.BoxDeleteData:
+                i = DeleteDataActivity.newIntent(MenuActivity.this);
+                break;
+            case R.id.BoxExtra:
+                i = ExtraActivity.newIntent(MenuActivity.this);
+                break;
+        }
+        startActivity(i);
+    }
+
+    public static Intent newIntent(Context packageContext) {
+        Intent i = new Intent(packageContext, MenuActivity.class);
+        return i;
+    }
+}
