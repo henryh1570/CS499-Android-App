@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/bg5"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center"
+        android:text="Previous Entry"
+        android:textSize="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wake up Hour: "
+            android:textColor="#FFFFFF"
+            android:textSize="40dp" />
+
+        <EditText
+            android:id="@+id/editTextWakeUpHour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789"
+            android:textColor="#FFFFFF"
+            android:ems="30"
+            android:inputType="numberSigned"
+            android:maxLength="2" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hours Slept: "
+            android:textColor="#FFFFFF"
+            android:textSize="40dp" />
+
+        <EditText
+            android:id="@+id/editTextHoursSlept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789"
+            android:textColor="#FFFFFF"
+            android:ems="30"
+            android:inputType="numberSigned"
+            android:maxLength="2" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/done"
+        android:layout_gravity="center"
+        android:textSize="50dp"
+        android:text="Done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

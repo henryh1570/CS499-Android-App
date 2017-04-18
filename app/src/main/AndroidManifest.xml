@@ -47,6 +47,16 @@
             android:parentActivityName=".MenuActivity"></activity>
 
         <activity
+            android:name=".SleepTodayActivity"
+            android:label="SleepTodayActivity"
+            android:parentActivityName=".SleepActivity"></activity>
+
+        <activity
+            android:name=".SleepPreviousActivity"
+            android:label="SleepPreviousActivity"
+            android:parentActivityName=".SleepActivity"></activity>
+
+        <activity
             android:name=".StatsActivity"
             android:label="StatsActivity"
             android:parentActivityName=".MenuActivity"></activity>

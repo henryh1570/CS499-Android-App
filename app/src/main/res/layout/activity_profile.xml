@@ -30,7 +30,7 @@
                 android:id="@+id/editTextName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
+                android:ems="20"
                 android:maxLength="20"
                 android:inputType="textPersonName" />
         </LinearLayout>
@@ -45,14 +45,12 @@
                 android:text="Desired Bed Hour:"
                 android:textSize="35dp" />
 
-            <EditText
-                android:id="@+id/editTextBedHour"
-                android:layout_width="match_parent"
+            <Spinner
+                android:id="@+id/profileBedHour"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:maxLength="2"
-                android:digits="0123456789"
-                android:inputType="numberSigned" />
+                android:entries="@array/bedHours">
+            </Spinner>
 
         </LinearLayout>
 
@@ -66,14 +64,12 @@
                 android:text="Desired Sleep Hours:"
                 android:textSize="35dp" />
 
-            <EditText
-                android:id="@+id/editTextSleepHour"
-                android:layout_width="match_parent"
+            <Spinner
+                android:id="@+id/profileSleptHours"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:maxLength="2"
-                android:digits="0123456789"
-                android:inputType="numberSigned" />
+                android:entries="@array/bedHours">
+            </Spinner>
 
         </LinearLayout>
 

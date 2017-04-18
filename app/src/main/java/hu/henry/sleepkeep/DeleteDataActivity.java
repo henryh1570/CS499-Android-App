@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class DeleteDataActivity extends AppCompatActivity {
 
@@ -21,15 +22,20 @@ public class DeleteDataActivity extends AppCompatActivity {
         deleteScoreButton = (Button) findViewById(R.id.deleteScore);
         deleteHistoryButton = (Button) findViewById(R.id.deleteHistory);
 
+        //TODO: Code to delete saved data.
         deleteScoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(DeleteDataActivity.this, "Score Reset",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
         deleteHistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(DeleteDataActivity.this, "History Deleted",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
