@@ -20,17 +20,41 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bed Hour: "
+            android:text="Bed Time: "
             android:textColor="#FFFFFF"
             android:textSize="40dp" />
 
-        <Spinner
-            android:id="@+id/sleepTodayBedHour"
+        <TextView
+            android:id="@+id/todayCurrentTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/bedHours">
-        </Spinner>
+            android:text=""
+            android:textColor="#FFFFFF"
+            android:textSize="40dp" />
+
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date: "
+            android:textColor="#FFFFFF"
+            android:textSize="40dp" />
+
+        <TextView
+            android:id="@+id/todayCurrentDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#FFFFFF"
+            android:textSize="40dp" />
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/lockIn"
