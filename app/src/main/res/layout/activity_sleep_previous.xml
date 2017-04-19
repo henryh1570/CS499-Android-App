@@ -17,6 +17,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/timeSlept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Time Slept: "
@@ -37,22 +38,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <TextView
+        <CheckBox
+            android:id="@+id/hourCheckBox"
+            android:buttonTint="#FFFFFF"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:text="Manually Enter Hours:Mins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/manualHour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hours Slept: "
-            android:textColor="#FFFFFF"
-            android:textSize="40dp" />
+            android:entries="@array/bedHours">
+        </Spinner>
 
-        <EditText
-            android:id="@+id/editTextHoursSlept"
-            android:layout_width="match_parent"
+        <Spinner
+            android:id="@+id/manualMin"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:digits="0123456789"
-            android:textColor="#FFFFFF"
-            android:ems="30"
-            android:inputType="numberSigned"
-            android:maxLength="2" />
+            android:entries="@array/bedMins">
+        </Spinner>
+
+
     </LinearLayout>
 
     <Button
