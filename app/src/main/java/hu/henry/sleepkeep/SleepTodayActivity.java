@@ -11,19 +11,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class SleepTodayActivity extends AppCompatActivity {
 
     private boolean isLocked;
     private Button lockInButton;
+    private Button addNewEntryButton;
     private TextView todayTimeText;
     private TextView todayDateText;
     private CountDownTimer clock;
+    private ArrayList<SleepEntry> list = new ArrayList<SleepEntry>();
+    private SleepEntryAdapter adapter;
+    private ListView entriesListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +37,19 @@ public class SleepTodayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sleep_today);
 
         lockInButton = (Button) findViewById(R.id.lockIn);
+        addNewEntryButton = (Button) findViewById(R.id.addNewEntry);
         todayTimeText = (TextView) findViewById(R.id.todayCurrentTime);
         todayDateText = (TextView) findViewById(R.id.todayCurrentDate);
+        entriesListView = (ListView) findViewById(R.id.todayEntriesList);
 
         // TODO: Load saved data here
         isLocked = false;
+        list =  new ArrayList<SleepEntry>();
+
+        // Attach adapter and wire to listview
+        adapter = new SleepEntryAdapter(this, list);
+        adapter.notifyDataSetChanged();
+        entriesListView.setAdapter(adapter);
 
         // Start the clock if today's entry is not done
         // Otherwise do not use the clock and disable the lock in button
@@ -43,17 +57,18 @@ public class SleepTodayActivity extends AppCompatActivity {
             clock = getClock();
             clock.start();
         } else {
-            // TODO: Load time / date here
+            // TODO: Load time / date of lockin here
             todayTimeText.setText("LOADED TIME");
             todayDateText.setText("LOADED DATE");
             lockInButton.setEnabled(false);
+            addNewEntryButton.setEnabled(false);
         }
 
+        // Lockin the data to freeze timer and other features
         lockInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder adb;
-                final EditText editText = new EditText(SleepTodayActivity.this);
                 adb = new AlertDialog.Builder(SleepTodayActivity.this);
                 adb.setTitle("Confirmation");
                 adb
@@ -63,6 +78,7 @@ public class SleepTodayActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 isLocked = true;
                                 lockInButton.setEnabled(false);
+                                addNewEntryButton.setEnabled(false);
 
                                 //TODO: Save time and date data here
                                 todayTimeText.setTextColor(Color.RED);
@@ -74,6 +90,35 @@ public class SleepTodayActivity extends AppCompatActivity {
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alertDialog = adb.create();
+                alertDialog.show();
+            }
+        });
+
+        // Allow user to create a new entry object and display it in listview
+        addNewEntryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder adb;
+                final EditText editText = new EditText(SleepTodayActivity.this);
+                adb = new AlertDialog.Builder(SleepTodayActivity.this);
+                adb.setTitle("New Sleep Entry");
+                adb
+                        .setMessage("Fill in the details")
+                        .setCancelable(false)
+                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // TODO: Custom entry here
+                                list.add(new SleepEntry("my title", "testing", "today", 5, SleepEntry.EntryType.OTHER));
+                                adapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
                             }

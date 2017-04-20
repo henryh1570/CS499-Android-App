@@ -55,12 +55,41 @@
 
     </LinearLayout>
 
-
     <Button
-        android:id="@+id/lockIn"
+        android:id="@+id/addNewEntry"
+        android:text="Add New Entry"
         android:layout_gravity="center"
-        android:textSize="50dp"
-        android:text="Lock In"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1">
+
+        <ListView
+            android:dividerHeight="2px"
+            android:id="@+id/todayEntriesList"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+        </ListView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp">
+
+        <Button
+            android:id="@+id/lockIn"
+            android:textSize="50dp"
+            android:text="Lock In"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    
 </LinearLayout>

@@ -46,7 +46,6 @@ public class SleepActivity extends AppCompatActivity {
                 if (previousComplete == false) {
                     // Code to customize a dialog box.
                     AlertDialog.Builder adb;
-                    final EditText editText = new EditText(SleepActivity.this);
                     adb = new AlertDialog.Builder(SleepActivity.this);
                     adb.setTitle("Warning");
                     adb
