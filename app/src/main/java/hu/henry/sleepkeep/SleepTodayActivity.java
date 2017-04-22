@@ -1,5 +1,6 @@
 package hu.henry.sleepkeep;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,10 +9,13 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,12 +68,45 @@ public class SleepTodayActivity extends AppCompatActivity {
             addNewEntryButton.setEnabled(false);
         }
 
+        // OnclickListener for individual items in listview. Prompt for entry deletion.
+        entriesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position,
+                                    long id) {
+                AlertDialog.Builder adb;
+                adb = new AlertDialog.Builder(SleepTodayActivity.this);
+                final String title = list.get(position).getTitle();
+                adb.setTitle(title);
+                adb
+                        .setMessage("Delete this entry?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Toast.makeText(SleepTodayActivity.this, "Deleted " + title,
+                                        Toast.LENGTH_SHORT).show();
+
+                                list.remove(position);
+                                adapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alertDialog = adb.create();
+                alertDialog.show();
+            }
+        });
+
         // Lockin the data to freeze timer and other features
         lockInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder adb;
                 adb = new AlertDialog.Builder(SleepTodayActivity.this);
+
                 adb.setTitle("Confirmation");
                 adb
                         .setMessage("Are you ready to lock in now?")
@@ -105,8 +142,13 @@ public class SleepTodayActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder adb;
-                final EditText editText = new EditText(SleepTodayActivity.this);
                 adb = new AlertDialog.Builder(SleepTodayActivity.this);
+                LayoutInflater inflater = SleepTodayActivity.this.getLayoutInflater();
+
+                // Inflate and set the layout for the dialog
+                // Pass null as the parent view because its going in the dialog layout
+                adb.setView(inflater.inflate(R.layout.dialog_entryform, null));
+
                 adb.setTitle("New Sleep Entry");
                 adb
                         .setMessage("Fill in the details")
@@ -114,7 +156,20 @@ public class SleepTodayActivity extends AppCompatActivity {
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // TODO: Custom entry here
-                                list.add(new SleepEntry("my title", "testing", "today", 5, SleepEntry.EntryType.OTHER));
+                                // Get this dialog's edittext values and make a SleepEntry object
+                                Dialog d = (Dialog) dialog;
+                                String title = ((EditText) d.findViewById(R.id.dialog_title)).getText().toString();
+                                String description = ((EditText) d.findViewById(R.id.dialog_description)).getText().toString();
+                                String importance = ((Spinner) d.findViewById(R.id.dialog_importance)).getSelectedItem().toString();
+                                String type = ((Spinner) d.findViewById(R.id.dialog_type)).getSelectedItem().toString();
+                                String date = todayDateText.toString();
+                                if (title.equals("")) {
+                                    title = "Nameless Entry";
+                                }
+                                if (description.equals("")) {
+                                    description = "No description.";
+                                }
+                                list.add(new SleepEntry(title, description, date, Integer.parseInt(importance), type));
                                 adapter.notifyDataSetChanged();
                             }
                         })

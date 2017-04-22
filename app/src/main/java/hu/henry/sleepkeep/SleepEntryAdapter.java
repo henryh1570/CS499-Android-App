@@ -48,7 +48,6 @@ public class SleepEntryAdapter extends BaseAdapter {
             holder.description = (TextView) convertView.findViewById(R.id.listViewEntryDescription);
             holder.importance = (TextView) convertView.findViewById(R.id.listViewEntryImportance);
             holder.type = (TextView) convertView.findViewById(R.id.listViewEntryType);
-            holder.isComplete = (TextView) convertView.findViewById(R.id.listViewEntryComplete);
 
             convertView.setTag(holder);
         } else {
@@ -59,8 +58,7 @@ public class SleepEntryAdapter extends BaseAdapter {
         holder.title.setText(list.get(position).getTitle());
         holder.description.setText(list.get(position).getDescription());
         holder.importance.setText("Importance: " + list.get(position).getImportance());
-        holder.type.setText("Type: " + list.get(position).getTypeString());
-        holder.isComplete.setText("Complete: " + list.get(position).getIsCompleteString());
+        holder.type.setText("Type: " + list.get(position).getType());
 
         return convertView;
     }
@@ -71,6 +69,5 @@ public class SleepEntryAdapter extends BaseAdapter {
         TextView description;
         TextView importance;
         TextView type;
-        TextView isComplete;
     }
 }

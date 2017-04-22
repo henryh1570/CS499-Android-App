@@ -5,9 +5,9 @@ public class SleepEntry {
     private String title;
     private String description;
     private String date;
+    private String type;
     private int importance;
     private boolean isComplete;
-    private EntryType type;
 
     public String getTitle() {
         return title;
@@ -41,20 +41,11 @@ public class SleepEntry {
         }
     }
 
-    public String getTypeString() {
-        return type.toString();
-    }
-
-    public EntryType getType() {
+    public String getType() {
         return type;
     }
 
-
-    public enum EntryType {
-        CHORE, WORK, LEISURE, OTHER
-    }
-
-    public SleepEntry(String title, String description, String date, int importance, EntryType type) {
+    public SleepEntry(String title, String description, String date, int importance, String type) {
         this.title = title;
         this.description = description;
         this.date = date;
