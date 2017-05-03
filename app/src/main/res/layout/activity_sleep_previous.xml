@@ -61,7 +61,21 @@
             android:entries="@array/bedMins">
         </Spinner>
 
+    </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1">
+
+        <ListView
+            android:dividerHeight="2px"
+            android:id="@+id/previousEntriesList"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+        </ListView>
     </LinearLayout>
 
     <Button

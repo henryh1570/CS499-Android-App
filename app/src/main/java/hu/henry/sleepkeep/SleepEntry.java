@@ -2,6 +2,7 @@ package hu.henry.sleepkeep;
 
 public class SleepEntry {
 
+    private final char DELIMITER = '`';
     private String title;
     private String description;
     private String date;
@@ -45,12 +46,20 @@ public class SleepEntry {
         return type;
     }
 
-    public SleepEntry(String title, String description, String date, int importance, String type) {
+    public SleepEntry(String title, String description, String date, int importance, String type, boolean complete) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.importance = importance;
-        isComplete = false;
+        this.isComplete = complete;
         this.type = type;
+    }
+
+    public String toDelimitedString() {
+        return title + DELIMITER + description + DELIMITER + date + DELIMITER + type + DELIMITER + importance + DELIMITER + isComplete;
+    }
+
+    public char getDELIMITER() {
+        return DELIMITER;
     }
 }

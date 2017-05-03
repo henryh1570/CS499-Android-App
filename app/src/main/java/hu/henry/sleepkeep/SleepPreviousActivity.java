@@ -9,15 +9,18 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class SleepPreviousActivity extends AppCompatActivity {
@@ -33,6 +36,9 @@ public class SleepPreviousActivity extends AppCompatActivity {
     CheckBox checkBox;
     Spinner manualHourSpinner;
     Spinner manualMinSpinner;
+    ListView previousEntriesListView;
+    private ArrayList<SleepEntry> list = new ArrayList<SleepEntry>();
+    private SleepPreviousEntryAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +55,54 @@ public class SleepPreviousActivity extends AppCompatActivity {
         manualMinSpinner = (Spinner) findViewById(R.id.manualMin);
         manualMinSpinner.setEnabled(false);
         manualMinSpinner.setVisibility(View.INVISIBLE);
+        previousEntriesListView = (ListView) findViewById(R.id.previousEntriesList);
 
-        // TODO: Load the locked date string here
+        // TODO: Load the locked date string here, and list
+        // Attach adapter and wire to listview
+        list = new ArrayList<SleepEntry>();
+        testList(5);
+        adapter = new SleepPreviousEntryAdapter(this, list);
+        adapter.notifyDataSetChanged();
+        previousEntriesListView.setAdapter(adapter);
+
         previousTimeString = "04/18/2017 16:55:03";
         previousTimeValue = new Date(previousTimeString).getTime();
 
         clock = getClock();
         clock.start();
+
+        // OnclickListener for individual items in listview. Prompt for entry deletion.
+        previousEntriesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position,
+                                    long id) {
+                AlertDialog.Builder adb;
+                adb = new AlertDialog.Builder(SleepPreviousActivity.this);
+                final String title = list.get(position).getTitle();
+                adb.setTitle(title);
+                adb
+                        .setMessage("Is this entry completed?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Toast.makeText(SleepPreviousActivity.this, "Updated status of " + title,
+                                        Toast.LENGTH_SHORT).show();
+
+                                list.get(position).setComplete(true);
+                                adapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                list.get(position).setComplete(false);
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+
+                AlertDialog alertDialog = adb.create();
+                alertDialog.show();
+            }
+        });
 
         // Dialog box for confirming a finished entry
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +146,7 @@ public class SleepPreviousActivity extends AppCompatActivity {
                                             Toast.LENGTH_LONG).show();
 
                                     clock.onFinish();
-                                    //TODO: Save completed Entry to file here and Exit activity
+                                    //TODO: Save completed Entries list to file here and Exit activity
                                 }
                             }
                         })
@@ -162,5 +209,12 @@ public class SleepPreviousActivity extends AppCompatActivity {
     public static Intent newIntent(Context packageContext) {
         Intent i = new Intent(packageContext, SleepPreviousActivity.class);
         return i;
+    }
+
+    // Test population for list
+    public void testList(int k) {
+        for (int i = 0; i < k; i++) {
+            list.add(new SleepEntry(("Entry #" + i), "basic desc.", "04/20/2017", (int) (i % 10), "OTHER", false));
+        }
     }
 }

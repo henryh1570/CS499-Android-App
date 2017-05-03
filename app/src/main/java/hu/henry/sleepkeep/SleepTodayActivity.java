@@ -48,7 +48,7 @@ public class SleepTodayActivity extends AppCompatActivity {
 
         // TODO: Load saved data here
         isLocked = false;
-        list =  new ArrayList<SleepEntry>();
+        list = new ArrayList<SleepEntry>();
 
         // Attach adapter and wire to listview
         adapter = new SleepEntryAdapter(this, list);
@@ -117,7 +117,7 @@ public class SleepTodayActivity extends AppCompatActivity {
                                 lockInButton.setEnabled(false);
                                 addNewEntryButton.setEnabled(false);
 
-                                //TODO: Save time and date data here
+                                //TODO: Save time and date data here, and list data
                                 todayTimeText.setTextColor(Color.RED);
                                 todayDateText.setTextColor(Color.RED);
                                 clock.onFinish();
@@ -155,21 +155,20 @@ public class SleepTodayActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // TODO: Custom entry here
                                 // Get this dialog's edittext values and make a SleepEntry object
                                 Dialog d = (Dialog) dialog;
-                                String title = ((EditText) d.findViewById(R.id.dialog_title)).getText().toString();
-                                String description = ((EditText) d.findViewById(R.id.dialog_description)).getText().toString();
-                                String importance = ((Spinner) d.findViewById(R.id.dialog_importance)).getSelectedItem().toString();
-                                String type = ((Spinner) d.findViewById(R.id.dialog_type)).getSelectedItem().toString();
-                                String date = todayDateText.toString();
+                                String title = ((EditText) d.findViewById(R.id.dialog_title)).getText().toString().replaceAll("[~`\\|]", "");
+                                String description = ((EditText) d.findViewById(R.id.dialog_description)).getText().toString().replaceAll("[~`\\|]", "");
+                                String importance = ((Spinner) d.findViewById(R.id.dialog_importance)).getSelectedItem().toString().replaceAll("[~`\\|]", "");
+                                String type = ((Spinner) d.findViewById(R.id.dialog_type)).getSelectedItem().toString().replaceAll("[~`\\|]", "");
+                                String date = todayDateText.toString().replaceAll("[~`\\|]", "");
                                 if (title.equals("")) {
                                     title = "Nameless Entry";
                                 }
                                 if (description.equals("")) {
                                     description = "No description.";
                                 }
-                                list.add(new SleepEntry(title, description, date, Integer.parseInt(importance), type));
+                                list.add(new SleepEntry(title, description, date, Integer.parseInt(importance), type, false));
                                 adapter.notifyDataSetChanged();
                             }
                         })
@@ -197,6 +196,7 @@ public class SleepTodayActivity extends AppCompatActivity {
                 todayTimeText.setText(time);
                 todayDateText.setText(date);
             }
+
             public void onFinish() {
                 cancel();
             }
