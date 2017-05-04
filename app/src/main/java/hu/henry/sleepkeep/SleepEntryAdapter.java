@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-
 // Class to handle sleepEntry items for a list view adapter
 public class SleepEntryAdapter extends BaseAdapter {
     private ArrayList<SleepEntry> list;

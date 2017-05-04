@@ -22,7 +22,6 @@
         android:text="Sleep Keep" />
     <TextView
         android:id="@+id/desc"
-        android:layout_below="@+id/title"
         android:text="Slave over work tommorow. Sleep kingly tonight."
         android:textColor="#FFFFFF"
         android:textSize="25dp"
@@ -30,7 +29,6 @@
         android:layout_height="wrap_content" />
     <ImageButton
         android:layout_gravity="center"
-        android:layout_below="@id/desc"
         android:id="@+id/logo"
         android:src="@drawable/sleep"
         android:background="@null"

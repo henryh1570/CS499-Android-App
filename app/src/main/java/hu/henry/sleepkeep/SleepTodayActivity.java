@@ -25,6 +25,7 @@ import java.util.Date;
 
 public class SleepTodayActivity extends AppCompatActivity {
 
+    SleepDataSharedPreferences SDSP = new SleepDataSharedPreferences(this);
     private boolean isLocked;
     private Button lockInButton;
     private Button addNewEntryButton;
@@ -34,6 +35,9 @@ public class SleepTodayActivity extends AppCompatActivity {
     private ArrayList<SleepEntry> list = new ArrayList<SleepEntry>();
     private SleepEntryAdapter adapter;
     private ListView entriesListView;
+    private String data;
+    private String[] dayData;
+    private String today;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,27 +50,41 @@ public class SleepTodayActivity extends AppCompatActivity {
         todayDateText = (TextView) findViewById(R.id.todayCurrentDate);
         entriesListView = (ListView) findViewById(R.id.todayEntriesList);
 
-        // TODO: Load saved data here
-        isLocked = false;
-        list = new ArrayList<SleepEntry>();
+        // Get the current date + data
+        SimpleDateFormat sdfdate = new SimpleDateFormat("MM/dd/yyyy");
+        today = sdfdate.format(new Date());
+        data = SDSP.getString(today);
+
+        if (!data.equals("")) {
+            dayData = data.split("\\|");
+        }
+
+        // Populate the list with existing entries delimited by '~'
+        if (!data.equals("") && dayData.length == 5) {
+            // Further delimit the entry strings to get their attributes
+            for (String eStr : dayData[4].split("~")) {
+                String[] att = eStr.split("`");
+                SleepEntry entry = new SleepEntry(att[0], att[1], att[2], Integer.parseInt(att[3]), Boolean.parseBoolean(att[4]), att[5]);
+                list.add(entry);
+            }
+        }
+
+        // Start the clock if today's entry is not done
+        // Otherwise do not use the clock and disable the lock in button
+        if (data.equals("") || dayData[1].equals("")) {
+            isLocked = false;
+            clock = getClock();
+            clock.start();
+        } else {
+            lockedDown();
+            todayDateText.setText(dayData[0]);
+            todayTimeText.setText(dayData[1]);
+        }
 
         // Attach adapter and wire to listview
         adapter = new SleepEntryAdapter(this, list);
         adapter.notifyDataSetChanged();
         entriesListView.setAdapter(adapter);
-
-        // Start the clock if today's entry is not done
-        // Otherwise do not use the clock and disable the lock in button
-        if (isLocked == false) {
-            clock = getClock();
-            clock.start();
-        } else {
-            // TODO: Load time / date of lockin here
-            todayTimeText.setText("LOADED TIME");
-            todayDateText.setText("LOADED DATE");
-            lockInButton.setEnabled(false);
-            addNewEntryButton.setEnabled(false);
-        }
 
         // OnclickListener for individual items in listview. Prompt for entry deletion.
         entriesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -113,14 +131,12 @@ public class SleepTodayActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                isLocked = true;
-                                lockInButton.setEnabled(false);
-                                addNewEntryButton.setEnabled(false);
+                                lockedDown();
+                                SimpleDateFormat sdftime = new SimpleDateFormat("HH:mm:ss");
+                                String time = sdftime.format(new Date());
 
-                                //TODO: Save time and date data here, and list data
-                                todayTimeText.setTextColor(Color.RED);
-                                todayDateText.setTextColor(Color.RED);
-                                clock.onFinish();
+                                //Save time and date data here, and list data
+                                SDSP.saveDay(today, time, "", "false", SDSP.combineEntries(list));
 
                                 Toast.makeText(SleepTodayActivity.this, "Locked In!",
                                         Toast.LENGTH_SHORT).show();
@@ -148,14 +164,13 @@ public class SleepTodayActivity extends AppCompatActivity {
                 // Inflate and set the layout for the dialog
                 // Pass null as the parent view because its going in the dialog layout
                 adb.setView(inflater.inflate(R.layout.dialog_entryform, null));
-
                 adb.setTitle("New Sleep Entry");
                 adb
                         .setMessage("Fill in the details")
                         .setCancelable(false)
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // Get this dialog's edittext values and make a SleepEntry object
+                                // Get this dialog's edittext values and make a SleepEntry object.
                                 Dialog d = (Dialog) dialog;
                                 String title = ((EditText) d.findViewById(R.id.dialog_title)).getText().toString().replaceAll("[~`\\|]", "");
                                 String description = ((EditText) d.findViewById(R.id.dialog_description)).getText().toString().replaceAll("[~`\\|]", "");
@@ -168,7 +183,7 @@ public class SleepTodayActivity extends AppCompatActivity {
                                 if (description.equals("")) {
                                     description = "No description.";
                                 }
-                                list.add(new SleepEntry(title, description, date, Integer.parseInt(importance), type, false));
+                                list.add(new SleepEntry(title, description, date, Integer.parseInt(importance), false, type));
                                 adapter.notifyDataSetChanged();
                             }
                         })
@@ -202,6 +217,18 @@ public class SleepTodayActivity extends AppCompatActivity {
             }
         };
         return newtimer;
+    }
+
+    // Prevent ui features when the entry is locked down
+    public void lockedDown() {
+        isLocked = true;
+        lockInButton.setEnabled(false);
+        addNewEntryButton.setEnabled(false);
+        todayTimeText.setTextColor(Color.RED);
+        todayDateText.setTextColor(Color.RED);
+        if (clock != null) {
+            clock.onFinish();
+        }
     }
 
     public static Intent newIntent(Context packageContext) {

@@ -10,6 +10,7 @@ import android.widget.TextView;
 public class MenuActivity extends AppCompatActivity {
 
     TextView welcomeText;
+    SleepDataSharedPreferences SDSP = new SleepDataSharedPreferences(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,8 +18,11 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         welcomeText = (TextView) findViewById(R.id.welcome);
-        // TODO: Retrieve stored username
-        welcomeText.setText("Hello, " + "Doc" + "!");
+        String name = SDSP.getString("username");
+        if (name.equals("")) {
+            name = "nameless user";
+        }
+        welcomeText.setText("Hello, " + name + "!");
     }
 
     // OnClickListeners to change to the selected activity

@@ -6,14 +6,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class SleepActivity extends AppCompatActivity {
 
+    SleepDataSharedPreferences SDSP = new SleepDataSharedPreferences(this);
     boolean previousComplete = false;
     Button previousEntryButton;
     Button todayEntryButton;
@@ -25,18 +28,14 @@ public class SleepActivity extends AppCompatActivity {
         previousEntryButton = (Button) findViewById(R.id.previousEntry);
         todayEntryButton = (Button) findViewById(R.id.todayEntry);
 
-        // TODO: Load everything here and wire them
-        if (previousComplete == true) {
+        // Load everything here and wire them
+//        SDSP.saveDay(getDay(-1), "12:55:05", "", "false", new SleepEntry("bowling", "go bowling with kevin", getDay(-1), 4, false, "WORK").toDelimitedString());
+        // Check the previous date entry to see if still valid
+        String data = SDSP.getString(getDay(-1));
+        if (data.equals("") || data.split("\\|")[3].toLowerCase().equals("true")) {
+            previousComplete = true;
             previousEntryButton.setEnabled(false);
         }
-
-        previousEntryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = SleepPreviousActivity.newIntent(SleepActivity.this);
-                startActivity(i);
-            }
-        });
 
         // Launch the today entry activity if previous entry is complete.
         // Otherwise send an alert dialog box to confirm discard of previous entry.
@@ -53,7 +52,8 @@ public class SleepActivity extends AppCompatActivity {
                             .setCancelable(false)
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    // TODO: Code to discard previous entry
+                                    // Code to discard previous entry
+                                    SDSP.saveString(getDay(-1), "");
                                     previousComplete = true;
                                     previousEntryButton.setEnabled(false);
 
@@ -76,6 +76,22 @@ public class SleepActivity extends AppCompatActivity {
                 }
             }
         });
+
+        previousEntryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = SleepPreviousActivity.newIntent(SleepActivity.this);
+                startActivity(i);
+            }
+        });
+    }
+
+    // Offset -1 for yesterday
+    public String getDay(int offset) {
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, offset);
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        return dateFormat.format(cal.getTime());
     }
 
     public static Intent newIntent(Context packageContext) {

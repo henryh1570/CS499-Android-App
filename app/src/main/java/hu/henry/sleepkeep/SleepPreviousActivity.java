@@ -13,63 +13,88 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class SleepPreviousActivity extends AppCompatActivity {
 
     Button doneButton;
-    TextView timePassedText;
     TextView timeSleptText;
-    String previousTimeString;
-    long previousTimeValue;
+    TextView timePassedText;
     long diff;
+    long previousTimeValue;
     CountDownTimer clock;
-    String message;
     CheckBox checkBox;
-    Spinner manualHourSpinner;
+    String data;
+    String[] dayData;
+    String message;
+    String previousTimeString;
     Spinner manualMinSpinner;
+    Spinner manualHourSpinner;
     ListView previousEntriesListView;
-    private ArrayList<SleepEntry> list = new ArrayList<SleepEntry>();
     private SleepPreviousEntryAdapter adapter;
+    private ArrayList<SleepEntry> list = new ArrayList<SleepEntry>();
+    SleepDataSharedPreferences SDFP = new SleepDataSharedPreferences(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sleep_previous);
 
+        // Wiring views/spinners, setting default values
         doneButton = (Button) findViewById(R.id.done);
         timePassedText = (TextView) findViewById(R.id.timePassed);
         timeSleptText = (TextView) findViewById(R.id.timeSlept);
         checkBox = (CheckBox) findViewById(R.id.hourCheckBox);
+        previousEntriesListView = (ListView) findViewById(R.id.previousEntriesList);
+
         manualHourSpinner = (Spinner) findViewById(R.id.manualHour);
         manualHourSpinner.setEnabled(false);
         manualHourSpinner.setVisibility(View.INVISIBLE);
+
         manualMinSpinner = (Spinner) findViewById(R.id.manualMin);
         manualMinSpinner.setEnabled(false);
         manualMinSpinner.setVisibility(View.INVISIBLE);
-        previousEntriesListView = (ListView) findViewById(R.id.previousEntriesList);
 
         // TODO: Load the locked date string here, and list
-        // Attach adapter and wire to listview
-        list = new ArrayList<SleepEntry>();
-        testList(5);
-        adapter = new SleepPreviousEntryAdapter(this, list);
-        adapter.notifyDataSetChanged();
-        previousEntriesListView.setAdapter(adapter);
+        data = SDFP.getString(getDay(-1));
+        if (!data.equals("")) {
+            dayData = data.split("\\|");
+        }
 
-        previousTimeString = "04/18/2017 16:55:03";
+        // Populate the list with existing entries delimited by '~'
+        if (!data.equals("") && dayData.length == 5) {
+            // Further delimit the entry strings to get their attributes
+            for (String eStr : dayData[4].split("~")) {
+                String[] att = eStr.split("`");
+                SleepEntry entry = new SleepEntry(att[0], att[1], att[2], Integer.parseInt(att[3]), Boolean.parseBoolean(att[4]), att[5]);
+                list.add(entry);
+            }
+        }
+
+        // Load time date data
+        if (!data.equals("")) {
+            previousTimeString = (dayData[0] + " " + dayData[1]);
+        } else {
+            previousTimeString = "01/01/2017 16:55:03";
+        }
         previousTimeValue = new Date(previousTimeString).getTime();
 
         clock = getClock();
         clock.start();
+
+        // Apply updated list to the adapter and listview
+        adapter = new SleepPreviousEntryAdapter(this, list);
+        adapter.notifyDataSetChanged();
+        previousEntriesListView.setAdapter(adapter);
 
         // OnclickListener for individual items in listview. Prompt for entry deletion.
         previousEntriesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -109,7 +134,6 @@ public class SleepPreviousActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder adb;
-                final EditText editText = new EditText(SleepPreviousActivity.this);
                 adb = new AlertDialog.Builder(SleepPreviousActivity.this);
                 adb.setTitle("Confirmation");
                 adb
@@ -146,7 +170,12 @@ public class SleepPreviousActivity extends AppCompatActivity {
                                             Toast.LENGTH_LONG).show();
 
                                     clock.onFinish();
-                                    //TODO: Save completed Entries list to file here and Exit activity
+                                    doneButton.setEnabled(false);
+                                    checkBox.setEnabled(false);
+                                    manualHourSpinner.setEnabled(false);
+                                    manualMinSpinner.setEnabled(false);
+                                    // TODO: Save completed Entries list to file here and Exit activity
+                                    SDFP.saveDay(dayData[0], dayData[1], message, "true", SDFP.combineEntries(list));
                                 }
                             }
                         })
@@ -192,7 +221,7 @@ public class SleepPreviousActivity extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
                 String date = sdf.format(new Date());
 
-                diff = new Date(date.toString()).getTime() - previousTimeValue;
+                diff = new Date(date).getTime() - previousTimeValue;
                 long diffRemainingMins = ((diff / (1000 * 60)) % 60);
                 long diffHours = (diff / (1000 * 60 * 60));
                 message = diffHours + "h:" + diffRemainingMins + "m";
@@ -206,15 +235,16 @@ public class SleepPreviousActivity extends AppCompatActivity {
         return newtimer;
     }
 
+    // Offset -1 for yesterday
+    public String getDay(int offset) {
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, offset);
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        return dateFormat.format(cal.getTime());
+    }
+
     public static Intent newIntent(Context packageContext) {
         Intent i = new Intent(packageContext, SleepPreviousActivity.class);
         return i;
-    }
-
-    // Test population for list
-    public void testList(int k) {
-        for (int i = 0; i < k; i++) {
-            list.add(new SleepEntry(("Entry #" + i), "basic desc.", "04/20/2017", (int) (i % 10), "OTHER", false));
-        }
     }
 }

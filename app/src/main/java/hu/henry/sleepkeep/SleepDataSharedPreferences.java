@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class SleepDataSharedPreferences {
 
     public static final String MyPREFERENCES = "SleepPreferences";
-    public static Context context;
+    public Context context;
 
     public SleepDataSharedPreferences(Context context) {
         this.context = context;
@@ -26,6 +26,18 @@ public class SleepDataSharedPreferences {
         return sharedpreferences.getString(key, "");
     }
 
+    public void saveInt(String key, int value) {
+        SharedPreferences sharedpreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt(key, value);
+        editor.apply();
+    }
+
+    public int getInt(String key) {
+        SharedPreferences sharedpreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        return sharedpreferences.getInt(key, 0);
+    }
+
     // Combine entry strings with '~' delimiter
     public String combineEntries(ArrayList<SleepEntry> entries) {
         String str = "";
@@ -36,9 +48,16 @@ public class SleepDataSharedPreferences {
     }
 
     public void saveDay(String date, String lockInTime, String hoursSlept, String finished,
-                          String entries) {
+                        String entries) {
         String str = date + "|" + lockInTime + "|" + hoursSlept + "|" + finished + "|"
                 + entries;
         saveString(date, str);
+    }
+
+    public void deleteAllData() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
     }
 }
