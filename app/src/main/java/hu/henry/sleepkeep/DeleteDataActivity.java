@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 public class DeleteDataActivity extends AppCompatActivity {
 
+    SleepDataSharedPreferences SDFP = new SleepDataSharedPreferences(this);
     Button deleteScoreButton;
     Button deleteHistoryButton;
 
@@ -33,6 +34,14 @@ public class DeleteDataActivity extends AppCompatActivity {
         deleteHistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String username = SDFP.getString("username");
+                int bedHour = SDFP.getInt("bedHour");
+                int sleepHour = SDFP.getInt("sleepHour");
+                SDFP.deleteAllData();
+                SDFP.saveString("username", username);
+                SDFP.saveInt("bedHour", bedHour);
+                SDFP.saveInt("sleepHour", sleepHour);
+
                 Toast.makeText(DeleteDataActivity.this, "History Deleted",
                         Toast.LENGTH_SHORT).show();
             }

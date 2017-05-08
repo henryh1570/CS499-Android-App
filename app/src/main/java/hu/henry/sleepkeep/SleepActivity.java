@@ -53,7 +53,7 @@ public class SleepActivity extends AppCompatActivity {
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     // Code to discard previous entry
-                                    SDSP.saveString(getDay(-1), "");
+                                    SDSP.delete(getDay(-1));
                                     previousComplete = true;
                                     previousEntryButton.setEnabled(false);
 

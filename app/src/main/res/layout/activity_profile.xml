@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg2" />
+
     <LinearLayout
-        android:background="@drawable/bg2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -31,8 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="20"
-                android:maxLength="20"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:maxLength="20" />
         </LinearLayout>
 
         <LinearLayout
@@ -49,8 +54,7 @@
                 android:id="@+id/profileBedHour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:entries="@array/bedHours">
-            </Spinner>
+                android:entries="@array/bedHours"></Spinner>
 
         </LinearLayout>
 
@@ -68,19 +72,17 @@
                 android:id="@+id/profileSleptHours"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:entries="@array/bedHours">
-            </Spinner>
+                android:entries="@array/bedHours"></Spinner>
 
         </LinearLayout>
 
         <Button
             android:id="@+id/saveProfile"
-            android:textSize="25dp"
-            android:text="Save Changes"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Save Changes"
+            android:textSize="25dp" />
 
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

@@ -36,14 +36,14 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Get the shared preferences sleep hour
         defaultSleepHour = SDSP.getInt("sleepHour");
-        if (defaultSleepHour == 0) {
+        if (defaultSleepHour < 0) {
             defaultSleepHour = 8;
         }
         sleepHoursSpinner.setSelection(defaultSleepHour);
 
         // Get the shared preferences bed hour
         defaultBedHour = SDSP.getInt("bedHour");
-        if (defaultBedHour == 0) {
+        if (defaultBedHour < 0) {
             defaultBedHour = 18;
         }
         bedHourSpinner.setSelection(defaultBedHour);

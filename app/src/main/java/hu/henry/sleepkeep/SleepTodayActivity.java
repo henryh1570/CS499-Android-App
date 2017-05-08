@@ -91,30 +91,32 @@ public class SleepTodayActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position,
                                     long id) {
-                AlertDialog.Builder adb;
-                adb = new AlertDialog.Builder(SleepTodayActivity.this);
-                final String title = list.get(position).getTitle();
-                adb.setTitle(title);
-                adb
-                        .setMessage("Delete this entry?")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Toast.makeText(SleepTodayActivity.this, "Deleted " + title,
-                                        Toast.LENGTH_SHORT).show();
+                if (isLocked == false) {
+                    AlertDialog.Builder adb;
+                    adb = new AlertDialog.Builder(SleepTodayActivity.this);
+                    final String title = list.get(position).getTitle();
+                    adb.setTitle(title);
+                    adb
+                            .setMessage("Delete this entry?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Toast.makeText(SleepTodayActivity.this, "Deleted " + title,
+                                            Toast.LENGTH_SHORT).show();
 
-                                list.remove(position);
-                                adapter.notifyDataSetChanged();
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
+                                    list.remove(position);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
 
-                AlertDialog alertDialog = adb.create();
-                alertDialog.show();
+                    AlertDialog alertDialog = adb.create();
+                    alertDialog.show();
+                }
             }
         });
 
@@ -176,7 +178,7 @@ public class SleepTodayActivity extends AppCompatActivity {
                                 String description = ((EditText) d.findViewById(R.id.dialog_description)).getText().toString().replaceAll("[~`\\|]", "");
                                 String importance = ((Spinner) d.findViewById(R.id.dialog_importance)).getSelectedItem().toString().replaceAll("[~`\\|]", "");
                                 String type = ((Spinner) d.findViewById(R.id.dialog_type)).getSelectedItem().toString().replaceAll("[~`\\|]", "");
-                                String date = todayDateText.toString().replaceAll("[~`\\|]", "");
+                                String date = todayDateText.getText().toString().replaceAll("[~`\\|]", "");
                                 if (title.equals("")) {
                                     title = "Nameless Entry";
                                 }

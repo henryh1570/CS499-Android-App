@@ -35,7 +35,7 @@ public class SleepDataSharedPreferences {
 
     public int getInt(String key) {
         SharedPreferences sharedpreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        return sharedpreferences.getInt(key, 0);
+        return sharedpreferences.getInt(key, -1);
     }
 
     // Combine entry strings with '~' delimiter
@@ -58,6 +58,13 @@ public class SleepDataSharedPreferences {
         SharedPreferences sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
+        editor.apply();
+    }
+
+    public void delete(String key) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(key);
         editor.apply();
     }
 }

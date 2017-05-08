@@ -18,9 +18,21 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         welcomeText = (TextView) findViewById(R.id.welcome);
+        int sleepHour = SDSP.getInt("sleepHour");
+        int bedHour = SDSP.getInt("bedHour");
         String name = SDSP.getString("username");
+
+        if (sleepHour < 0 ) {
+            SDSP.saveInt("sleepHour", 8);
+        }
+
+        if (bedHour < 0 ) {
+            SDSP.saveInt("bedHour", 18);
+        }
+
         if (name.equals("")) {
             name = "nameless user";
+            SDSP.saveString("username", name);
         }
         welcomeText.setText("Hello, " + name + "!");
     }
