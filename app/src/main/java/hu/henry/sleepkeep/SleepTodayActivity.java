@@ -25,7 +25,7 @@ import java.util.Date;
 
 public class SleepTodayActivity extends AppCompatActivity {
 
-    SleepDataSharedPreferences SDSP = new SleepDataSharedPreferences(this);
+    SleepDataSharedPreferencesManager SDSP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
     private boolean isLocked;
     private Button lockInButton;
     private Button addNewEntryButton;
@@ -53,7 +53,7 @@ public class SleepTodayActivity extends AppCompatActivity {
         // Get the current date + data
         SimpleDateFormat sdfdate = new SimpleDateFormat("MM/dd/yyyy");
         today = sdfdate.format(new Date());
-        data = SDSP.getString(today);
+        data = SDSP.getString(SleepTodayActivity.this, today);
 
         if (!data.equals("")) {
             dayData = data.split("\\|");
@@ -138,7 +138,7 @@ public class SleepTodayActivity extends AppCompatActivity {
                                 String time = sdftime.format(new Date());
 
                                 //Save time and date data here, and list data
-                                SDSP.saveDay(today, time, "", "false", SDSP.combineEntries(list));
+                                SDSP.saveDay(SleepTodayActivity.this, today, time, "", "false", SDSP.combineEntries(list));
 
                                 Toast.makeText(SleepTodayActivity.this, "Locked In!",
                                         Toast.LENGTH_SHORT).show();

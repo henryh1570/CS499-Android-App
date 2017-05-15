@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    SleepDataSharedPreferences SDSP = new SleepDataSharedPreferences(this);
+    SleepDataSharedPreferencesManager SDSP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
     Button saveProfileButton;
     EditText nameText;
     Spinner sleepHoursSpinner;
@@ -31,18 +31,18 @@ public class ProfileActivity extends AppCompatActivity {
         nameText = (EditText) findViewById(R.id.editTextName);
         sleepHoursSpinner = (Spinner) findViewById(R.id.profileSleptHours);
         bedHourSpinner = (Spinner) findViewById(R.id.profileBedHour);
-        username = SDSP.getString("username");
+        username = SDSP.getString(ProfileActivity.this, "username");
         nameText.setText(username, TextView.BufferType.EDITABLE);
 
         // Get the shared preferences sleep hour
-        defaultSleepHour = SDSP.getInt("sleepHour");
+        defaultSleepHour = SDSP.getInt(ProfileActivity.this, "sleepHour");
         if (defaultSleepHour < 0) {
             defaultSleepHour = 8;
         }
         sleepHoursSpinner.setSelection(defaultSleepHour);
 
         // Get the shared preferences bed hour
-        defaultBedHour = SDSP.getInt("bedHour");
+        defaultBedHour = SDSP.getInt(ProfileActivity.this, "bedHour");
         if (defaultBedHour < 0) {
             defaultBedHour = 18;
         }
@@ -60,9 +60,9 @@ public class ProfileActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 } else {
                     // Save the data
-                    SDSP.saveString("username", nameText.getText().toString());
-                    SDSP.saveInt("sleepHour", Integer.parseInt(sleepHoursSpinner.getSelectedItem().toString()));
-                    SDSP.saveInt("bedHour", Integer.parseInt(bedHourSpinner.getSelectedItem().toString()));
+                    SDSP.saveString(ProfileActivity.this, "username", nameText.getText().toString());
+                    SDSP.saveInt(ProfileActivity.this, "sleepHour", Integer.parseInt(sleepHoursSpinner.getSelectedItem().toString()));
+                    SDSP.saveInt(ProfileActivity.this, "bedHour", Integer.parseInt(bedHourSpinner.getSelectedItem().toString()));
                     Toast.makeText(ProfileActivity.this, "Data Saved!",
                             Toast.LENGTH_LONG).show();
                 }

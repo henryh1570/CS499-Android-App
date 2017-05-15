@@ -42,7 +42,7 @@ public class SleepPreviousActivity extends AppCompatActivity {
     ListView previousEntriesListView;
     private SleepPreviousEntryAdapter adapter;
     private ArrayList<SleepEntry> list = new ArrayList<SleepEntry>();
-    SleepDataSharedPreferences SDFP = new SleepDataSharedPreferences(this);
+    SleepDataSharedPreferencesManager SDFP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class SleepPreviousActivity extends AppCompatActivity {
         manualMinSpinner.setVisibility(View.INVISIBLE);
 
         // TODO: Load the locked date string here, and list
-        data = SDFP.getString(getDay(-1));
+        data = SDFP.getString(SleepPreviousActivity.this, getDay(-1));
         if (!data.equals("")) {
             dayData = data.split("\\|");
         }
@@ -175,7 +175,7 @@ public class SleepPreviousActivity extends AppCompatActivity {
                                     manualHourSpinner.setEnabled(false);
                                     manualMinSpinner.setEnabled(false);
                                     // TODO: Save completed Entries list to file here and Exit activity
-                                    SDFP.saveDay(dayData[0], dayData[1], message, "true", SDFP.combineEntries(list));
+                                    SDFP.saveDay(SleepPreviousActivity.this, dayData[0], dayData[1], message, "true", SDFP.combineEntries(list));
                                 }
                             }
                         })

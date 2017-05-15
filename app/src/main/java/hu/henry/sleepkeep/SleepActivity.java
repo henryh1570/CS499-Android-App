@@ -16,7 +16,7 @@ import java.util.Calendar;
 
 public class SleepActivity extends AppCompatActivity {
 
-    SleepDataSharedPreferences SDSP = new SleepDataSharedPreferences(this);
+    SleepDataSharedPreferencesManager SDSP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
     boolean previousComplete = false;
     Button previousEntryButton;
     Button todayEntryButton;
@@ -29,9 +29,9 @@ public class SleepActivity extends AppCompatActivity {
         todayEntryButton = (Button) findViewById(R.id.todayEntry);
 
         // Load everything here and wire them
-//        SDSP.saveDay(getDay(-1), "12:55:05", "", "false", new SleepEntry("bowling", "go bowling with kevin", getDay(-1), 4, false, "WORK").toDelimitedString());
+//        SDSP.saveDay(SleepActivity.this, getDay(-1), "12:55:05", "", "false", new SleepEntry("bowling", "go bowling with kevin", getDay(-1), 4, false, "WORK").toDelimitedString());
         // Check the previous date entry to see if still valid
-        String data = SDSP.getString(getDay(-1));
+        String data = SDSP.getString(SleepActivity.this, getDay(-1));
         if (data.equals("") || data.split("\\|")[3].toLowerCase().equals("true")) {
             previousComplete = true;
             previousEntryButton.setEnabled(false);
@@ -53,7 +53,7 @@ public class SleepActivity extends AppCompatActivity {
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     // Code to discard previous entry
-                                    SDSP.delete(getDay(-1));
+                                    SDSP.delete(SleepActivity.this, getDay(-1));
                                     previousComplete = true;
                                     previousEntryButton.setEnabled(false);
 

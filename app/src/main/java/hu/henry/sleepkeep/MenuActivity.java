@@ -10,7 +10,7 @@ import android.widget.TextView;
 public class MenuActivity extends AppCompatActivity {
 
     TextView welcomeText;
-    SleepDataSharedPreferences SDSP = new SleepDataSharedPreferences(this);
+    SleepDataSharedPreferencesManager SDSP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,21 +18,21 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         welcomeText = (TextView) findViewById(R.id.welcome);
-        int sleepHour = SDSP.getInt("sleepHour");
-        int bedHour = SDSP.getInt("bedHour");
-        String name = SDSP.getString("username");
+        int sleepHour = SDSP.getInt(MenuActivity.this, "sleepHour");
+        int bedHour = SDSP.getInt(MenuActivity.this, "bedHour");
+        String name = SDSP.getString(MenuActivity.this, "username");
 
         if (sleepHour < 0 ) {
-            SDSP.saveInt("sleepHour", 8);
+            SDSP.saveInt(MenuActivity.this, "sleepHour", 8);
         }
 
         if (bedHour < 0 ) {
-            SDSP.saveInt("bedHour", 18);
+            SDSP.saveInt(MenuActivity.this, "bedHour", 18);
         }
 
         if (name.equals("")) {
             name = "nameless user";
-            SDSP.saveString("username", name);
+            SDSP.saveString(MenuActivity.this, "username", name);
         }
         welcomeText.setText("Hello, " + name + "!");
     }
