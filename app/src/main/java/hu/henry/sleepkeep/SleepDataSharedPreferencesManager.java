@@ -50,6 +50,9 @@ public class SleepDataSharedPreferencesManager {
     // Combine entry strings with '~' delimiter
     public String combineEntries(ArrayList<SleepEntry> entries) {
         String str = "";
+        if (entries.size() == 0) {
+            return str;
+        }
         for (SleepEntry entry : entries) {
             str += (entry.toDelimitedString() + "~");
         }

@@ -29,11 +29,6 @@ public class StatsActivity extends AppCompatActivity {
         GraphView graph = (GraphView) findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series;
 
-        for (int i = 0; i < 7; i++) {
-            SDSP.saveDay(StatsActivity.this, getDay(-1*i), "12:55:05", ""+ i*i%10, "false", new SleepEntry("bowling", "go bowling with kevin", getDay(-1), 4, false, "WORK").toDelimitedString());
-        }
-
-
         // Get last week's hours slept
         ArrayList<DataPoint> list = new ArrayList<DataPoint>();
         for (int i = 0; i < 7; i++) {
@@ -41,10 +36,13 @@ public class StatsActivity extends AppCompatActivity {
             if (!data.equals("")) {
                 String hours = (data.split("\\|")[2]);
                 if (!hours.equals("")) {
+                    // Extract hours from #h:#m string
+                    hours = hours.split(":")[0].replaceAll("[^\\d.]", "");
                     list.add(new DataPoint(i, Integer.parseInt(hours)));
                 }
             }
         }
+
         series = new LineGraphSeries<>(list.toArray(new DataPoint[list.size()]));
         series.setDrawDataPoints(true);
         series.setDrawBackground(true);
@@ -79,7 +77,6 @@ public class StatsActivity extends AppCompatActivity {
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         return dateFormat.format(cal.getTime());
     }
-
 
     public static Intent newIntent(Context packageContext) {
         Intent i = new Intent(packageContext, StatsActivity.class);

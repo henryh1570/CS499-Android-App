@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        logoButton = (ImageButton) findViewById(R.id.logo);
+        logoButton = (ImageButton) findViewById(R.id.logoImg);
 
         logoButton.setOnClickListener(new View.OnClickListener() {
             @Override

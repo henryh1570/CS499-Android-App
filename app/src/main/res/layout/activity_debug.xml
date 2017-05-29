@@ -4,11 +4,39 @@
     android:background="#a1dda0"
     android:layout_height="match_parent">
 
-    <TextView
-        android:textColor="#FFFFFF"
-        android:text="Debug"
-        android:textSize="70dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:textColor="#FFFFFF"
+            android:text="Debug"
+            android:textSize="70dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/debugAddButton"
+            android:text="Add Dummy days"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/debugClearTodayButton"
+            android:text="Clear Today's Entry"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/debugCompleteTodayButton"
+            android:text="Complete Today's Entry"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </RelativeLayout>

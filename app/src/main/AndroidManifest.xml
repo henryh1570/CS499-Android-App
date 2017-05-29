@@ -28,7 +28,7 @@
 
         <activity
             android:name=".DebugActivity"
-            android:label="ExtraActivity"
+            android:label="DebugActivity"
             android:parentActivityName=".MenuActivity"></activity>
 
         <activity
