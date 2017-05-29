@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bg1" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#cc0000"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,23 +11,25 @@
         android:orientation="vertical">
 
         <TextView
-            android:textColor="#FFFFFF"
-            android:text="Delete Data"
-            android:textSize="70dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Delete Data"
+            android:textColor="#FFFFFF"
+            android:textSize="70dp" />
+
         <Button
             android:id="@+id/deleteScore"
-            android:textSize="50dp"
-            android:text="Reset Score"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Reset Score"
+            android:textSize="50dp" />
+
         <Button
             android:id="@+id/deleteHistory"
-            android:textSize="45dp"
-            android:text="Delete History"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Delete History"
+            android:textSize="45dp" />
     </LinearLayout>
 
 </RelativeLayout>

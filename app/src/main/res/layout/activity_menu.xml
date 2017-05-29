@@ -2,14 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg1"
+    android:background="#6380FF"
     android:orientation="vertical">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bg1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,14 +43,6 @@
                 android:background="@null"
                 android:onClick="boxOnClick"
                 android:src="@drawable/thumbnail_sleep" />
-
-            <ImageButton
-                android:id="@+id/BoxMiniGame"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:onClick="boxOnClick"
-                android:src="@drawable/thumbnail_game" />
 
             <ImageButton
                 android:id="@+id/BoxStats"

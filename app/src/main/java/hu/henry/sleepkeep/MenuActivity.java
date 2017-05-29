@@ -44,9 +44,6 @@ public class MenuActivity extends AppCompatActivity {
             case R.id.BoxSleepEntry:
                 i = SleepActivity.newIntent(MenuActivity.this);
                 break;
-            case R.id.BoxMiniGame:
-                i = MiniGameActivity.newIntent(MenuActivity.this);
-                break;
             case R.id.BoxStats:
                 i = StatsActivity.newIntent(MenuActivity.this);
                 break;
@@ -57,7 +54,7 @@ public class MenuActivity extends AppCompatActivity {
                 i = DeleteDataActivity.newIntent(MenuActivity.this);
                 break;
             case R.id.BoxExtra:
-                i = ExtraActivity.newIntent(MenuActivity.this);
+                i = DebugActivity.newIntent(MenuActivity.this);
                 break;
         }
         startActivity(i);

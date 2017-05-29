@@ -5,13 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#00b3b3"
     tools:context="hu.henry.sleepkeep.MainActivity">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bg1" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -27,13 +27,8 @@
             android:parentActivityName=".MenuActivity"></activity>
 
         <activity
-            android:name=".ExtraActivity"
+            android:name=".DebugActivity"
             android:label="ExtraActivity"
-            android:parentActivityName=".MenuActivity"></activity>
-
-        <activity
-            android:name=".MiniGameActivity"
-            android:label="MiniGameActivity"
             android:parentActivityName=".MenuActivity"></activity>
 
         <activity
