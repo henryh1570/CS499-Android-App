@@ -47,23 +47,8 @@ public class SleepDataSharedPreferencesManager {
         return getSharedPreferences(context).getInt(key, -1);
     }
 
-    // Combine entry strings with '~' delimiter
-    public String combineEntries(ArrayList<SleepEntry> entries) {
-        String str = "";
-        if (entries.size() == 0) {
-            return str;
-        }
-        for (SleepEntry entry : entries) {
-            str += (entry.toDelimitedString() + "~");
-        }
-        return str.substring(0, str.length() - 1);
-    }
-
-    public void saveDay(Context context, String date, String lockInTime, String hoursSlept, String finished,
-                        String entries) {
-        String str = date + "|" + lockInTime + "|" + hoursSlept + "|" + finished + "|"
-                + entries;
-        saveString(context, date, str);
+    public void saveDay(Context context, DayEntry dayEntry) {
+        saveString(context, dayEntry.getDate(), dayEntry.toJson());
     }
 
     public void deleteAllData(Context context) {

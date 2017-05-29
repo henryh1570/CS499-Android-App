@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 public class DeleteDataActivity extends AppCompatActivity {
 
-    SleepDataSharedPreferencesManager SDFP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
+    SleepDataSharedPreferencesManager SDSP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
     Button deleteScoreButton;
     Button deleteHistoryButton;
 
@@ -34,13 +34,13 @@ public class DeleteDataActivity extends AppCompatActivity {
         deleteHistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = SDFP.getString(DeleteDataActivity.this, "username");
-                int bedHour = SDFP.getInt(DeleteDataActivity.this, "bedHour");
-                int sleepHour = SDFP.getInt(DeleteDataActivity.this, "sleepHour");
-                SDFP.deleteAllData(DeleteDataActivity.this);
-                SDFP.saveString(DeleteDataActivity.this, "username", username);
-                SDFP.saveInt(DeleteDataActivity.this, "bedHour", bedHour);
-                SDFP.saveInt(DeleteDataActivity.this, "sleepHour", sleepHour);
+                String username = SDSP.getString(DeleteDataActivity.this, "username");
+                int bedHour = SDSP.getInt(DeleteDataActivity.this, "bedHour");
+                int sleepHour = SDSP.getInt(DeleteDataActivity.this, "sleepHour");
+                SDSP.deleteAllData(DeleteDataActivity.this);
+                SDSP.saveString(DeleteDataActivity.this, "username", username);
+                SDSP.saveInt(DeleteDataActivity.this, "bedHour", bedHour);
+                SDSP.saveInt(DeleteDataActivity.this, "sleepHour", sleepHour);
 
                 Toast.makeText(DeleteDataActivity.this, "History Deleted",
                         Toast.LENGTH_SHORT).show();

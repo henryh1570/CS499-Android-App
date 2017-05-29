@@ -8,7 +8,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -26,5 +26,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.jjoe64:graphview:4.2.1'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
     testCompile 'junit:junit:4.12'
 }

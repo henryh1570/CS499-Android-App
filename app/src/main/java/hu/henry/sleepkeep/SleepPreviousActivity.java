@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class SleepPreviousActivity extends AppCompatActivity {
     CountDownTimer clock;
     CheckBox checkBox;
     String data;
-    String[] dayData;
+    DayEntry dayData;
     String message;
     String previousTimeString;
     Spinner manualMinSpinner;
@@ -65,27 +67,22 @@ public class SleepPreviousActivity extends AppCompatActivity {
         manualMinSpinner.setVisibility(View.INVISIBLE);
 
         // TODO: Load the locked date string here, and list
+        Gson gson = new Gson();
         data = SDSP.getString(SleepPreviousActivity.this, getDay(-1));
-        if (!data.equals("")) {
-            dayData = data.split("\\|");
-        }
+        dayData = gson.fromJson(data, DayEntry.class);
 
         // Populate the list with existing entries delimited by '~'
-        if (!data.equals("") && dayData.length == 5) {
-            // Further delimit the entry strings to get their attributes
-            for (String eStr : dayData[4].split("~")) {
-                String[] att = eStr.split("`");
-                SleepEntry entry = new SleepEntry(att[0], att[1], att[2], Integer.parseInt(att[3]), Boolean.parseBoolean(att[4]), att[5]);
-                list.add(entry);
-            }
+        if (!data.equals("") && dayData.isFinished() == false) {
+            list = dayData.getList();
         }
 
         // Load time date data
         if (!data.equals("")) {
-            previousTimeString = (dayData[0] + " " + dayData[1]);
+            previousTimeString = (dayData.getDate() + " " + dayData.getLockInTime());
         } else {
             previousTimeString = "01/01/2017 16:55:03";
         }
+
         previousTimeValue = new Date(previousTimeString).getTime();
 
         clock = getClock();
@@ -175,7 +172,14 @@ public class SleepPreviousActivity extends AppCompatActivity {
                                     manualHourSpinner.setEnabled(false);
                                     manualMinSpinner.setEnabled(false);
                                     // TODO: Save completed Entries list to file here and Exit activity
-                                    SDSP.saveDay(SleepPreviousActivity.this, dayData[0], dayData[1], message, "true", SDSP.combineEntries(list));
+
+                                    //Save time and date data here, and list data
+                                    dayData.setList(list);
+                                    dayData.setIsFinished(true);
+                                    dayData.setHoursSlept(message);
+
+                                    SDSP.saveDay(SleepPreviousActivity.this, dayData);
+
                                 }
                             }
                         })

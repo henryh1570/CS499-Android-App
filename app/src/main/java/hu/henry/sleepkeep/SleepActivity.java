@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -29,10 +31,12 @@ public class SleepActivity extends AppCompatActivity {
         todayEntryButton = (Button) findViewById(R.id.todayEntry);
 
         // Load everything here and wire them
-//        SDSP.saveDay(SleepActivity.this, getDay(-1), "12:55:05", "", "false", new SleepEntry("bowling", "go bowling with kevin", getDay(-1), 4, false, "WORK").toDelimitedString());
         // Check the previous date entry to see if still valid
         String data = SDSP.getString(SleepActivity.this, getDay(-1));
-        if (data.equals("") || data.split("\\|")[3].toLowerCase().equals("true")) {
+        Gson gson = new Gson();
+        DayEntry dayData = gson.fromJson(data, DayEntry.class);
+
+        if (data.equals("") || dayData.isFinished() == true) {
             previousComplete = true;
             previousEntryButton.setEnabled(false);
         }

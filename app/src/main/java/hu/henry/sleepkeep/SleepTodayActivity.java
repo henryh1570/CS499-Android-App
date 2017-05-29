@@ -19,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,8 +38,9 @@ public class SleepTodayActivity extends AppCompatActivity {
     private SleepEntryAdapter adapter;
     private ListView entriesListView;
     private String data;
-    private String[] dayData;
+    private DayEntry dayData = new DayEntry("", "", "", false, list);
     private String today;
+    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,29 +59,20 @@ public class SleepTodayActivity extends AppCompatActivity {
         data = SDSP.getString(SleepTodayActivity.this, today);
 
         if (!data.equals("")) {
-            dayData = data.split("\\|");
-        }
-
-        // Populate the list with existing entries delimited by '~'
-        if (!data.equals("") && dayData.length == 5) {
-            // Further delimit the entry strings to get their attributes
-            for (String eStr : dayData[4].split("~")) {
-                String[] att = eStr.split("`");
-                SleepEntry entry = new SleepEntry(att[0], att[1], att[2], Integer.parseInt(att[3]), Boolean.parseBoolean(att[4]), att[5]);
-                list.add(entry);
-            }
+            dayData = gson.fromJson(data, DayEntry.class);
+            list = dayData.getList();
         }
 
         // Start the clock if today's entry is not done
         // Otherwise do not use the clock and disable the lock in button
-        if (data.equals("") || dayData[1].equals("")) {
+        if (data.equals("") || dayData.getLockInTime() == "") {
             isLocked = false;
             clock = getClock();
             clock.start();
         } else {
             lockedDown();
-            todayDateText.setText(dayData[0]);
-            todayTimeText.setText(dayData[1]);
+            todayDateText.setText(dayData.getDate());
+            todayTimeText.setText(dayData.getLockInTime());
         }
 
         // Attach adapter and wire to listview
@@ -138,7 +132,13 @@ public class SleepTodayActivity extends AppCompatActivity {
                                 String time = sdftime.format(new Date());
 
                                 //Save time and date data here, and list data
-                                SDSP.saveDay(SleepTodayActivity.this, today, time, "", "false", SDSP.combineEntries(list));
+                                dayData.setList(list);
+                                dayData.setLockInTime(time);
+                                dayData.setDate(today);
+                                dayData.setIsFinished(false);
+                                dayData.setHoursSlept("");
+
+                                SDSP.saveDay(SleepTodayActivity.this, dayData);
 
                                 Toast.makeText(SleepTodayActivity.this, "Locked In!",
                                         Toast.LENGTH_SHORT).show();
@@ -179,12 +179,15 @@ public class SleepTodayActivity extends AppCompatActivity {
                                 String importance = ((Spinner) d.findViewById(R.id.dialog_importance)).getSelectedItem().toString().replaceAll("[~`\\|]", "");
                                 String type = ((Spinner) d.findViewById(R.id.dialog_type)).getSelectedItem().toString().replaceAll("[~`\\|]", "");
                                 String date = todayDateText.getText().toString().replaceAll("[~`\\|]", "");
+
                                 if (title.equals("")) {
                                     title = "Nameless Entry";
                                 }
+
                                 if (description.equals("")) {
                                     description = "No description.";
                                 }
+
                                 list.add(new SleepEntry(title, description, date, Integer.parseInt(importance), false, type));
                                 adapter.notifyDataSetChanged();
                             }

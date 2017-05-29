@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.gson.Gson;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.Viewport;
@@ -29,12 +30,15 @@ public class StatsActivity extends AppCompatActivity {
         GraphView graph = (GraphView) findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series;
 
+        Gson gson = new Gson();
+
         // Get last week's hours slept
         ArrayList<DataPoint> list = new ArrayList<DataPoint>();
         for (int i = 0; i < 7; i++) {
             String data = SDSP.getString(StatsActivity.this, getDay(-1*i));
+            DayEntry dayData = gson.fromJson(data, DayEntry.class);
             if (!data.equals("")) {
-                String hours = (data.split("\\|")[2]);
+                String hours = dayData.getHoursSlept();
                 if (!hours.equals("")) {
                     // Extract hours from #h:#m string
                     hours = hours.split(":")[0].replaceAll("[^\\d.]", "");
@@ -49,8 +53,6 @@ public class StatsActivity extends AppCompatActivity {
         series.setAnimated(true);
         series.setThickness(5);
         series.setColor(Color.YELLOW);
-
-
 
         GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
         gridLabel.setHorizontalAxisTitle("Days Ago");
