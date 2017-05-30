@@ -44,7 +44,7 @@ public class SleepPreviousActivity extends AppCompatActivity {
     ListView previousEntriesListView;
     private SleepPreviousEntryAdapter adapter;
     private ArrayList<SleepEntry> list = new ArrayList<SleepEntry>();
-    SleepDataSharedPreferencesManager SDSP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
+    SleepDataSharedPrefs SDSP = SleepDataSharedPrefs.getSleepDataSharedPreferences();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +171,6 @@ public class SleepPreviousActivity extends AppCompatActivity {
                                     checkBox.setEnabled(false);
                                     manualHourSpinner.setEnabled(false);
                                     manualMinSpinner.setEnabled(false);
-                                    // TODO: Save completed Entries list to file here and Exit activity
 
                                     //Save time and date data here, and list data
                                     dayData.setList(list);

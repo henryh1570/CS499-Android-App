@@ -18,7 +18,7 @@ import java.util.Calendar;
 
 public class SleepActivity extends AppCompatActivity {
 
-    SleepDataSharedPreferencesManager SDSP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
+    SleepDataSharedPrefs SDSP = SleepDataSharedPrefs.getSleepDataSharedPreferences();
     boolean previousComplete = false;
     Button previousEntryButton;
     Button todayEntryButton;

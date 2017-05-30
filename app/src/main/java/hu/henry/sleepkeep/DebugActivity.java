@@ -3,9 +3,7 @@ package hu.henry.sleepkeep;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -20,7 +18,7 @@ import java.util.Date;
 
 public class DebugActivity extends AppCompatActivity {
 
-    SleepDataSharedPreferencesManager SDSP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
+    SleepDataSharedPrefs SDSP = SleepDataSharedPrefs.getSleepDataSharedPreferences();
     Button addDummyButton;
     Button clearTodayButton;
     Button completeTodayButton;

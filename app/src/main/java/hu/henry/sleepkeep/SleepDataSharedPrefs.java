@@ -3,22 +3,17 @@ package hu.henry.sleepkeep;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.util.ArrayList;
+public class SleepDataSharedPrefs {
 
-public class SleepDataSharedPreferencesManager {
-
-    private static volatile SleepDataSharedPreferencesManager INSTANCE = null;
+    private static SleepDataSharedPrefs INSTANCE;
     private static final String MyPREFERENCES = "SleepPreferences";
 
-    private SleepDataSharedPreferencesManager() {}
+    private SleepDataSharedPrefs() {
+    }
 
-    public static SleepDataSharedPreferencesManager getSleepDataSharedPreferences() {
+    public static SleepDataSharedPrefs getSleepDataSharedPreferences() {
         if (INSTANCE == null) {
-            synchronized(SleepDataSharedPreferencesManager.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new SleepDataSharedPreferencesManager();
-                }
-            }
+            INSTANCE = new SleepDataSharedPrefs();
         }
         return INSTANCE;
     }

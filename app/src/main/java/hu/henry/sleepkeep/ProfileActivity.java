@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    SleepDataSharedPreferencesManager SDSP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
+    SleepDataSharedPrefs SDSP = SleepDataSharedPrefs.getSleepDataSharedPreferences();
     Button saveProfileButton;
     EditText nameText;
     Spinner sleepHoursSpinner;

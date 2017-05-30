@@ -10,7 +10,7 @@ import android.widget.TextView;
 public class MenuActivity extends AppCompatActivity {
 
     TextView welcomeText;
-    SleepDataSharedPreferencesManager SDSP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
+    SleepDataSharedPrefs SDSP = SleepDataSharedPrefs.getSleepDataSharedPreferences();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

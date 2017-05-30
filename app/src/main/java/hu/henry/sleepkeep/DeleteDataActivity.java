@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 public class DeleteDataActivity extends AppCompatActivity {
 
-    SleepDataSharedPreferencesManager SDSP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
+    SleepDataSharedPrefs SDSP = SleepDataSharedPrefs.getSleepDataSharedPreferences();
     Button deleteScoreButton;
     Button deleteHistoryButton;
 

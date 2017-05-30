@@ -5,6 +5,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.jjoe64.graphview.GraphView;
@@ -20,34 +25,57 @@ import java.util.Calendar;
 
 public class StatsActivity extends AppCompatActivity {
 
-    SleepDataSharedPreferencesManager SDSP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
+    SleepDataSharedPrefs SDSP = SleepDataSharedPrefs.getSleepDataSharedPreferences();
+    Button toggleButton;
+    TextView dateView;
+    ListView previousEntriesListView;
+    private SleepPreviousEntryAdapter adapter;
+    ArrayList<SleepEntry> list = new ArrayList<SleepEntry>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
 
-        GraphView graph = (GraphView) findViewById(R.id.graph);
+        Gson gson = new Gson();
+        toggleButton = (Button) findViewById(R.id.statsToggle);
+        dateView = (TextView) findViewById(R.id.debugDate);
+        previousEntriesListView = (ListView) findViewById(R.id.statsEntriesList);
+        // Apply updated list to the adapter and listview
+        adapter = new SleepPreviousEntryAdapter(this, list);
+        adapter.notifyDataSetChanged();
+        previousEntriesListView.setAdapter(adapter);
+        previousEntriesListView.setVisibility(View.GONE);
+        dateView.setVisibility(View.GONE);
+
+
+        String dataSaved = SDSP.getString(StatsActivity.this, getDay(0));
+        if (!dataSaved.equals("")) {
+            DayEntry dayData = gson.fromJson(dataSaved, DayEntry.class);
+            list.addAll(dayData.getList());
+            adapter.notifyDataSetChanged();
+        }
+
+
+        final GraphView graph = (GraphView) findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series;
 
-        Gson gson = new Gson();
-
         // Get last week's hours slept
-        ArrayList<DataPoint> list = new ArrayList<DataPoint>();
+        ArrayList<DataPoint> dataPoints = new ArrayList<DataPoint>();
         for (int i = 0; i < 7; i++) {
             String data = SDSP.getString(StatsActivity.this, getDay(-1*i));
-            DayEntry dayData = gson.fromJson(data, DayEntry.class);
             if (!data.equals("")) {
+                DayEntry dayData = gson.fromJson(data, DayEntry.class);
                 String hours = dayData.getHoursSlept();
                 if (!hours.equals("")) {
                     // Extract hours from #h:#m string
                     hours = hours.split(":")[0].replaceAll("[^\\d.]", "");
-                    list.add(new DataPoint(i, Integer.parseInt(hours)));
+                    dataPoints.add(new DataPoint(i, Integer.parseInt(hours)));
                 }
             }
         }
 
-        series = new LineGraphSeries<>(list.toArray(new DataPoint[list.size()]));
+        series = new LineGraphSeries<>(dataPoints.toArray(new DataPoint[dataPoints.size()]));
         series.setDrawDataPoints(true);
         series.setDrawBackground(true);
         series.setAnimated(true);
@@ -70,6 +98,23 @@ public class StatsActivity extends AppCompatActivity {
         graph.setTitle("Hours Slept in the Last 7 Days");
         graph.setTitleColor(Color.WHITE);
         graph.addSeries(series);
+
+        toggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (graph.getVisibility() == View.VISIBLE) {
+                    graph.setVisibility(View.GONE);
+                    dateView.setVisibility(View.VISIBLE);
+                    previousEntriesListView.setVisibility(View.VISIBLE);
+                    toggleButton.setText("View Graph");
+                } else {
+                    graph.setVisibility(View.VISIBLE);
+                    dateView.setVisibility(View.GONE);
+                    previousEntriesListView.setVisibility(View.GONE);
+                    toggleButton.setText("View History");
+                }
+            }
+        });
     }
 
     // Offset -1 for yesterday

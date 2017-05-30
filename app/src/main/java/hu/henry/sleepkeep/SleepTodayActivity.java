@@ -27,7 +27,7 @@ import java.util.Date;
 
 public class SleepTodayActivity extends AppCompatActivity {
 
-    SleepDataSharedPreferencesManager SDSP = SleepDataSharedPreferencesManager.getSleepDataSharedPreferences();
+    SleepDataSharedPrefs SDSP = SleepDataSharedPrefs.getSleepDataSharedPreferences();
     private boolean isLocked;
     private Button lockInButton;
     private Button addNewEntryButton;
