@@ -48,7 +48,6 @@ public class SleepPreviousEntryAdapter extends BaseAdapter {
             holder.description = (TextView) convertView.findViewById(R.id.listViewPreviousEntryDescription);
             holder.importance = (TextView) convertView.findViewById(R.id.listViewPreviousEntryImportance);
             holder.type = (TextView) convertView.findViewById(R.id.listViewPreviousEntryType);
-            holder.date = (TextView) convertView.findViewById(R.id.listViewPreviousEntryDate);
             holder.complete = (TextView) convertView.findViewById(R.id.listViewPreviousEntryComplete);
 
             convertView.setTag(holder);
@@ -61,7 +60,6 @@ public class SleepPreviousEntryAdapter extends BaseAdapter {
         holder.description.setText(list.get(position).getDescription());
         holder.importance.setText("Importance: " + list.get(position).getImportance());
         holder.type.setText("Type: " + list.get(position).getType());
-        holder.date.setText("Date: " + list.get(position).getDate());
         holder.complete.setText("Complete: " + list.get(position).getIsCompleteString());
 
         return convertView;

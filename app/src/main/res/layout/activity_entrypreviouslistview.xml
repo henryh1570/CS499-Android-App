@@ -21,13 +21,6 @@
         android:textSize="20dp"
         android:textStyle="bold" />
     <TextView
-        android:id="@+id/listViewPreviousEntryDate"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:textColor="#FFFFFF"
-        android:textSize="25dp"
-        android:textStyle="bold" />
-    <TextView
         android:id="@+id/listViewPreviousEntryType"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

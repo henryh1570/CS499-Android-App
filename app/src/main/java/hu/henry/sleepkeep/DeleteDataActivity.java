@@ -31,6 +31,7 @@ public class DeleteDataActivity extends AppCompatActivity {
             }
         });
 
+        // Deletes everything
         deleteHistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

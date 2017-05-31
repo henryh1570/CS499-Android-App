@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+// Class used to hold an entire day's entry including sleep entries.
 public class DayEntry {
     private String date;
     private String lockInTime;

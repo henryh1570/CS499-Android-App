@@ -177,6 +177,7 @@ public class SleepPreviousActivity extends AppCompatActivity {
                                     dayData.setIsFinished(true);
                                     dayData.setHoursSlept(message);
 
+                                    // No need to save to history, day should already keyed
                                     SDSP.saveDay(SleepPreviousActivity.this, dayData);
 
                                 }

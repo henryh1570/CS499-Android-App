@@ -22,32 +22,61 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class StatsActivity extends AppCompatActivity {
 
+    private final SimpleDateFormat SDF = new SimpleDateFormat("MM/dd/yyyy");
     SleepDataSharedPrefs SDSP = SleepDataSharedPrefs.getSleepDataSharedPreferences();
-    Button toggleButton;
-    TextView dateView;
-    ListView previousEntriesListView;
+    private Button toggleButton;
+    private Button backwardButton;
+    private Button forwardButton;
+    private TextView dateView;
+    private ListView previousEntriesListView;
     private SleepPreviousEntryAdapter adapter;
-    ArrayList<SleepEntry> list = new ArrayList<SleepEntry>();
+    private ArrayList<SleepEntry> list = new ArrayList<SleepEntry>();
+    private GraphView graph;
+    private ArrayList<String> keys;
+    private String currentKey;
+    private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
 
-        Gson gson = new Gson();
+        gson = new Gson();
         toggleButton = (Button) findViewById(R.id.statsToggle);
-        dateView = (TextView) findViewById(R.id.debugDate);
+        backwardButton = (Button) findViewById(R.id.statsBackward);
+        forwardButton = (Button) findViewById(R.id.statsForward);
+        dateView = (TextView) findViewById(R.id.statsDate);
         previousEntriesListView = (ListView) findViewById(R.id.statsEntriesList);
         // Apply updated list to the adapter and listview
         adapter = new SleepPreviousEntryAdapter(this, list);
         adapter.notifyDataSetChanged();
+
+        // Hide secondary views
         previousEntriesListView.setAdapter(adapter);
         previousEntriesListView.setVisibility(View.GONE);
         dateView.setVisibility(View.GONE);
+        backwardButton.setVisibility(View.GONE);
+        forwardButton.setVisibility(View.GONE);
 
+        // Load hisory
+        String historyJSON = SDSP.getString(StatsActivity.this, "history");
+        keys = new ArrayList<String>();
+        currentKey = getDay(0);
+        History history = null;
+        if (!historyJSON.equals("")) {
+            history = gson.fromJson(historyJSON, History.class);
+            for (Date d: history.getEntryKeys()) {
+                keys.add(SDF.format(d));
+            }
+        } else {
+            backwardButton.setEnabled(false);
+            forwardButton.setEnabled(false);
+            dateView.setText("No entries have been made.");
+        }
 
         String dataSaved = SDSP.getString(StatsActivity.this, getDay(0));
         if (!dataSaved.equals("")) {
@@ -56,8 +85,7 @@ public class StatsActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         }
 
-
-        final GraphView graph = (GraphView) findViewById(R.id.graph);
+        graph = (GraphView) findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series;
 
         // Get last week's hours slept
@@ -102,17 +130,21 @@ public class StatsActivity extends AppCompatActivity {
         toggleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (graph.getVisibility() == View.VISIBLE) {
-                    graph.setVisibility(View.GONE);
-                    dateView.setVisibility(View.VISIBLE);
-                    previousEntriesListView.setVisibility(View.VISIBLE);
-                    toggleButton.setText("View Graph");
-                } else {
-                    graph.setVisibility(View.VISIBLE);
-                    dateView.setVisibility(View.GONE);
-                    previousEntriesListView.setVisibility(View.GONE);
-                    toggleButton.setText("View History");
-                }
+                toggleAction();
+            }
+        });
+
+        backwardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backwardAction();
+            }
+        });
+
+        forwardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                forwardAction();
             }
         });
     }
@@ -128,5 +160,60 @@ public class StatsActivity extends AppCompatActivity {
     public static Intent newIntent(Context packageContext) {
         Intent i = new Intent(packageContext, StatsActivity.class);
         return i;
+    }
+
+    // Load Previous entry date data
+    private void backwardAction() {
+        if (!currentKey.equals(keys.get(0))) {
+            currentKey = keys.get(keys.indexOf(currentKey) - 1);
+            dateView.setText(currentKey);
+            String dataSaved = SDSP.getString(StatsActivity.this, currentKey);
+            DayEntry dayData = gson.fromJson(dataSaved, DayEntry.class);
+            list.clear();
+            list.addAll(dayData.getList());
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    // Load Next entry date data
+    private void forwardAction() {
+        if (!currentKey.equals(keys.get(keys.size() - 1))) {
+            int index = keys.indexOf(currentKey);
+            currentKey = keys.get(index + 1);
+            dateView.setText(currentKey);
+            String dataSaved = SDSP.getString(StatsActivity.this, currentKey);
+            DayEntry dayData = gson.fromJson(dataSaved, DayEntry.class);
+            list.clear();
+            list.addAll(dayData.getList());
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private void toggleAction() {
+        // Hide graph, show history
+        if (graph.getVisibility() == View.VISIBLE) {
+            graph.setVisibility(View.GONE);
+            dateView.setVisibility(View.VISIBLE);
+            previousEntriesListView.setVisibility(View.VISIBLE);
+            backwardButton.setVisibility(View.VISIBLE);
+            forwardButton.setVisibility(View.VISIBLE);
+            toggleButton.setText("View Graph");
+            // If history exists
+            if (forwardButton.isEnabled() == true) {
+                // Make sure current key is valid.
+                if (!keys.contains(currentKey)) {
+                    currentKey = keys.get(keys.size() - 1);
+                }
+                dateView.setText(currentKey);
+            }
+        } else {
+            // Hide History, show graph
+            graph.setVisibility(View.VISIBLE);
+            dateView.setVisibility(View.GONE);
+            previousEntriesListView.setVisibility(View.GONE);
+            backwardButton.setVisibility(View.GONE);
+            forwardButton.setVisibility(View.GONE);
+            toggleButton.setText("View History");
+        }
     }
 }

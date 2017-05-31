@@ -138,7 +138,15 @@ public class SleepTodayActivity extends AppCompatActivity {
                                 dayData.setIsFinished(false);
                                 dayData.setHoursSlept("");
 
+                                // Save today's data and to history key
                                 SDSP.saveDay(SleepTodayActivity.this, dayData);
+                                String historyJSON = SDSP.getString(SleepTodayActivity.this, "history");
+                                History history = new History(new ArrayList<String>());
+                                if (!historyJSON.equals("")) {
+                                    history = gson.fromJson(historyJSON, History.class);
+                                }
+                                history.addKey(today);
+                                SDSP.saveString(SleepTodayActivity.this, "history", history.toJson());
 
                                 Toast.makeText(SleepTodayActivity.this, "Locked In!",
                                         Toast.LENGTH_SHORT).show();

@@ -18,14 +18,33 @@
             android:textColor="#FFFFFF"
             android:textSize="70dp" />
 
-        <Button
-            android:id="@+id/statsToggle"
-            android:text="View History"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/statsToggle"
+                android:text="View History"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/statsBackward"
+                android:text="Previous Date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/statsForward"
+                android:text="Next Date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/debugDate"
+            android:id="@+id/statsDate"
             android:text="Date"
             android:textSize="30dp"
             android:layout_width="wrap_content"
